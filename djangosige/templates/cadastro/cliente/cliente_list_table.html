@@ -1,0 +1,33 @@
+<div class="table-responsive">
+  <table id="lista-database" class="table table-bordered table-striped lista-table">
+    <thead>
+      <tr>
+        <th>#ID</th>                   
+        <th>姓名/社会地位</th>
+        <th>法人名称/法人税号</th>
+        <th>国家/地区</th>
+        <th>市</th>
+        <th>移除操作</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% if all_clientes%}
+      {% for cliente in all_clientes %}
+      <tr class="clickable-row" data-href="{% url 'cadastro:editarclienteview' cliente.id %}">
+        <td>{{cliente.id}}</td>
+        <td>{{cliente.nome_razao_social}}</td>
+        <td>{% ifequal cliente.tipo_pessoa "PJ" %}{{cliente.pessoa_jur_info.cnpj|default_if_none:""}}{% else %}{{cliente.pessoa_fis_info.cpf|default_if_none:""}}{% endifequal %}</td>
+        <td>{% if cliente.endereco.all.0.uf %}{{cliente.endereco.all.0.get_uf_display}}{% endif %}</td>
+        <td>{{cliente.endereco.all.0.municipio|default_if_none:""}}</td>
+        <td class="lista-remove">
+          <input type="checkbox" name="{{cliente.id}}" id="remover-entrada-{{cliente.id}}"/>
+          <label class="remove-entry-label" for="remover-entrada-{{cliente.id}}"></label>
+        </td>
+      </tr>
+      {% endfor %}
+      {%else%}
+      {%endif%}
+    </tbody>
+  </table>
+</div>

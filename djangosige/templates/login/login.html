@@ -1,0 +1,78 @@
+{%extends 'base/base.html'%}
+
+
+{%block title%}Login{%endblock%}
+{%block side_top_bars%}{%endblock%}
+
+{%block body_class%}login-page ls-closed{%endblock%}
+
+{%block content%}
+<div class="login-box">
+
+    {% include 'login/logo.html' %}
+
+    <div class="card">
+        <div class="body">
+        	{% if not request.user.is_authenticated %}
+            <form id="login" method="POST">
+            	{% csrf_token %}
+                <div class="msg">输入您的用户名和密码
+
+                {% include 'base/form_error_msg.html' %}
+
+                </div>
+
+                {% for field in form %}
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">{{field.label}}</i>
+                    </span>
+                    <div class="form-line">
+                        {{field}}
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="row">
+                    <div class="col-xs-8">
+                        <input type="checkbox" name="remember_me" id="remember_me" class="filled-in chk-col-light-blue">
+                        <label for="remember_me">记住密码</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <button class="btn btn-block btn-red" type="submit">登录</button>
+                    </div>
+                </div>
+
+                <div class="msg" style="margin-top:20px;">
+                    <a href="{% url 'login:esqueceuview' %}">忘记密码?</a><br/>
+                    <small><a href="http://github.com/thiagopena/djangoSIGE" style="font-size:inherit;">友情链接</a></small>
+                </div>
+
+            </form>
+            {%endif%}
+
+            {% include 'base/modal.html' %}
+
+        </div>
+    </div>
+</div>
+{%endblock%}
+
+
+{% block js %}
+
+    <!-- Mensagem caso sucesso ao solicitar troca de senha -->
+    {% if messages %}
+
+    {%for message in messages%}
+    {% if 'success' in message.tags %}
+
+    <script type="text/javascript">
+        $.Admin.messages.msgSucesso("{{message}}");
+    </script>
+    {%endif%}
+    {%endfor%}
+
+    {% endif %}
+
+{% endblock %}

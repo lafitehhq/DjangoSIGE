@@ -1,0 +1,43 @@
+{%extends 'base/base.html'%}
+
+
+{%block title%}Trocar senha{%endblock%}
+{%block side_top_bars%}{%endblock%}
+
+{%block body_class%}login-page ls-closed{%endblock%}
+
+{%block content%}
+<div class="login-box">
+
+    {% include 'login/logo.html' %}
+    
+    <div class="card">
+        <div class="body">
+            <form method="POST">
+                <div class="msg">输入你的电子邮件地址或注册用户名。电子邮件将被发送，包含交换密码的链接。
+                
+                {% include 'base/form_error_msg.html' %}
+
+                </div>
+                
+                {% csrf_token %}
+                
+                <div class="input-group">
+                    <div class="form-line">
+                        {{form.email_or_username}}
+                    </div>
+                </div>
+
+                <div style="text-align:center;">
+                    <button class="btn btn-red" type="submit">发送</button>
+                </div>
+            </form>
+            <div class="msg" style="margin-top:40px;margin-bottom:15px;">
+                <a href="{% url 'login:loginview'%}">返回</a>
+            </div>
+          
+        </div>
+    </div>
+</div>
+
+{%endblock%}

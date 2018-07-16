@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% load staticfiles %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap Css -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Css -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- Jquery 3.0.0 Js -->
+    <script src="{% static 'js/jquery/jquery-3.0.0.min.js' %}"></script>
+
+
+    <title>DjangoSIGE | {%block title%}Bem-vindo{%endblock%}</title>
+</head>
+
+<body class="{%block body_class%}theme{%endblock%}">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="md-preloader">
+                <svg viewbox="0 0 75 75">
+                    <circle cx="37.5" cy="37.5" r="33.5" class="pl-red" stroke-width="4" />
+                </svg>
+            </div>
+            <p class="loader-message">Carregando...</p>
+        </div>
+    </div>
+    <!-- #Page Loader -->
+
+    <!-- Overlay -->
+    <div class="overlay"></div>
+    <!--  #Overlay -->
+    
+    {%block side_top_bars%}
+    
+    <!-- Top Bar -->
+    <nav class="navbar topbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+
+                <a href="javascript:void(0);" class="bars"></a>
+                <div class="navbar-brand">
+                	<!-- Main icone, data e horario -->
+                    <span><a href="{% url 'base:index' %}">Django<b style="color:#e76d64;">SIGE</b></a></span>
+                    <!--<span style="padding-left:30px;">Bem-vindo(a), <strong class="username-strong"></strong></span>-->
+                    <span style="padding-left:25px;"><i class="material-icons">&#xE8DF;</i></span>
+                    <span>{%now "l, j/m/Y"%}</span>
+                    <span style="padding-left:10px;"><i class="material-icons ">&#xE8B5;</i></span>
+                    <span>{% now "H:i" %}</span>
+                    <!-- #Main icone, data e horario -->
+                </div>
+                
+            </div>
+
+            <!-- Icones ajuda e logout -->
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li><a href="https://github.com/thiagopena/djangoSIGE" title="Ajuda" ><i class="material-icons">&#xE8FD;</i></a></li>
+                    <li><a id="logout-btn" href="{% url 'login:logoutview' %}" title="登出" ><i class="material-icons">&#xE879;</i></a></li>
+                    
+                </ul>
+            </div>
+            <!-- #Icones ajuda e logout -->
+        </div>
+    </nav>
+    <!-- #Top Bar -->
+
+    <section>
+        <!-- Barra lateral -->
+        <aside id="barralateral" class="sidebar">
+            <!-- User Info -->
+            <div class="user-info">
+                <div class="image">
+                    {% if user_foto_sidebar %}
+                    <a href="{% url 'login:perfilview' %}"><img src="/media/{{user_foto_sidebar}}" width="48" height="48" alt="User" /></a>
+                    {%else%}
+                    <a href="{% url 'login:perfilview' %}"><img src="/media/imagens/user.png" width="48" height="48" alt="User" /></a>
+                    {%endif%}
+                </div>
+                <div class="info-container">
+                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{request.user.username}} {% if request.user.is_superuser %}(Admin){%endif%}</div>
+                    {% if user_empresa %}<div class="email">{{user_empresa}}</div>{% endif %}
+                    <div class="email">{{request.user.email}}</div>
+
+                    <div class="user-helper-dropdown">
+                        <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">&#xE313;</i>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="{% url 'login:perfilview' %}"><i class="material-icons">&#xE55A;</i>个人资料</a></li>
+                            <li role="seperator" class="divider"></li>
+                            <li><a {% if user_empresa %} href="{% url 'cadastro:editarempresaview' user_empresa.id %}"{%else%} class="popup" title="公司选择" href="{% url 'login:selecionarempresaview' %}" {%endif%}><i class="material-icons">&#xE0AF;</i>我的公司</a></li>
+                            <li role="seperator" class="divider"></li>
+                            <li><a href="{% url 'login:usuariosview' %}"><i class="material-icons">&#xE7FB;</i>用户</a></li>
+                            <li role="seperator" class="divider"></li>
+                            <li><a id="logout-btn" href="{% url 'login:logoutview' %}" title="登出" ><i class="material-icons">&#xE879;</i>登出</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- #User Info -->
+
+            <!-- Menu -->
+            <div class="menu">
+                <ul class="list">
+                    <li class="active">
+                        <a href="{% url 'base:index' %}">
+                            <i class="material-icons">&#xE88A;</i>
+                            <span>首页</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">&#xE85D;</i>
+                            <span>资源管理</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{% url 'cadastro:listaclientesview' %}">
+                                    客户
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'cadastro:listafornecedoresview' %}">
+                                    供应商
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'cadastro:listaprodutosview' %}">
+                                    产品
+                                </a>
+                            </li>
+                            <!--
+                            <li>
+                                <a href="javascript:void(0);">
+                                    Serviços
+                                </a>
+                            </li>
+                            -->
+                            <li>
+                                <a href="{% url 'cadastro:listaempresasview' %}">
+                                    公司
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'cadastro:listatransportadorasview' %}">
+                                    物流方
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class="menu-toggle">
+                                    其他
+                                </a>
+                                <ul class="ml-menu">
+                                    <li>
+                                        <a href="{% url 'cadastro:listacategoriasview' %}">
+                                            分类
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'cadastro:listaunidadesview' %}">
+                                            单位
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'cadastro:listamarcasview' %}">
+                                            品牌
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">&#xE54E;</i>
+                            <span>销售管理</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{% url 'vendas:listaorcamentovendaview' %}">
+                                    销售预算
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{% url 'vendas:listapedidovendaview' %}">
+                                    销售订单
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{% url 'vendas:listacondicaopagamentoview' %}">
+                                    付款条件
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">&#xE8CC;</i>
+                            <span>采购管理</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{% url 'compras:listaorcamentocompraview' %}">
+                                    采购预算
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'compras:listapedidocompraview' %}">
+                                    采购订单
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'vendas:listacondicaopagamentoview' %}">
+                                    付款条件
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">&#xE8B0;</i>
+                            <span>财务管理</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="javascript:void(0);" class="menu-toggle">
+                                    收据
+                                </a>
+                                <ul class="ml-menu">
+                                    <li>
+                                        <a href="{% url 'fiscal:listanotafiscalsaidaview' %}">
+                                            税收收入
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'fiscal:listanotafiscalentradaview' %}">
+                                            供应商说明
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'fiscal:configuracaonotafiscal' %}">
+                                            NF-e设置
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="{% url 'fiscal:listanaturezaoperacaoview' %}">
+                                    操作性质
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'fiscal:listagrupofiscalview' %}">
+                                    税务组
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class="menu-toggle">
+                                    沟通SEFAZ
+                                </a>
+                                <ul class="ml-menu">
+                                    <li>
+                                        <a href="{% url 'fiscal:consultarcadastro' %}">
+                                            咨询记录
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'fiscal:inutilizarnotas' %}">
+                                            禁用记录
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'fiscal:consultarnota' %}">
+                                            备注
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'fiscal:baixarnota' %}">
+                                            Baixar nota
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'fiscal:manifestacaodestinatario' %}">
+                                            收货人的表现
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">&#xE227;</i>
+                            <span>资金管理</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{% url 'financeiro:planocontasview' %}">
+                                    会计科目表
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'financeiro:fluxodecaixaview' %}">
+                                    现金流量
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{% url 'financeiro:listalancamentoview' %}">
+                                    投入金额管理
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="javascript:void(0);" class="menu-toggle">
+                                    收入金额管理
+                                </a>
+                                <ul class="ml-menu">
+                                    <li>
+                                        <a href="{% url 'financeiro:listarecebimentosview' %}">
+                                            收款
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'financeiro:listacontareceberview' %}">
+                                            应收帐款
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript:void(0);" class="menu-toggle">
+                                    支出金额管理
+                                </a>
+                                <ul class="ml-menu">
+                                    <li>
+                                        <a href="{% url 'financeiro:listapagamentosview' %}">
+                                            付款
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'financeiro:listacontapagarview' %}">
+                                            应付账款
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">&#xE1BD;</i>
+                            <span>库存管理</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{% url 'estoque:consultaestoqueview' %}">
+                                    库存查询
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'estoque:listalocalview' %}">
+                                    存货地点
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class="menu-toggle">
+                                    存货变动
+                                </a>
+                                <ul class="ml-menu">
+                                    <li>
+                                        <a href="{% url 'estoque:listamovimentoestoqueview' %}">
+                                            Todas movimentações
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'estoque:listaentradasestoqueview' %}">
+                                            Entradas
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'estoque:listasaidasestoqueview' %}">
+                                            Saídas
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'estoque:listatransferenciasestoqueview' %}">
+                                            Transferências
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- #Menu -->
+            <!-- Footer -->
+            <div class="legal">
+                <div class="copyright">
+                    &copy; 2017 <a href=""> DjangoSIGE</a>.
+                </div>
+                <div class="version">
+                    <b>版本: </b> {{versao}}
+                </div>
+            </div>
+            <!-- #Footer -->
+        </aside>
+        <!-- #Barra lateral -->
+        
+    </section>
+    {% endblock %}
+
+    {%block content%}
+    {%endblock%}
+
+    {% include 'base/modal.html' %}
+
+    <!-- Bootstrap Js -->
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+
+    <!-- Datatables Js -->
+    <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+    
+    <!-- Sige Js -->
+    <script src="{% static 'js/admin.js' %}"></script>
+
+
+    {% if messages %}
+    {%for message in messages%}
+    {% if 'permission_warning' in message.tags %}
+
+    <script type="text/javascript">
+        $.Admin.messages.msgAlerta("{{message}}");
+    </script>
+
+    {%endif%}
+    {%endfor%}
+    {%endif%}
+
+    {% block js %}
+    {% endblock %}
+
+</body>
+
+</html>

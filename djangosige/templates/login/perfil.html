@@ -1,0 +1,74 @@
+{%extends 'base/base.html'%}
+
+{%block title%}个人资料{%endblock%}
+{%block content%}
+<section class="content">
+  <div class="container-fluid block">
+    <div class="block-header">
+      <h2>个人资料</h2>
+    </div>
+    
+    {% include 'base/msg_sucesso.html' %}
+
+    <div class="block-content">
+      <div class="card">
+        <div class="header">
+          <h2>
+            <i class="material-icons">&#xE55A;</i>
+            我的个人资料
+          </h2>
+          <div class="header-btn">
+            <a href="{% url 'login:editarperfilview' %}" class="btn btn-primary"><i class="material-icons">&#xE254;</i><span> 编辑</span></a>
+          </div>
+        </div>
+        <div class="body perfil-user">
+          <div class="row">
+            <div class="col-md-3 foto-perfil">  
+              {% if user_foto_sidebar %}
+              <img src="/media/{{user_foto_sidebar}}"/>
+              {%else%}
+              <img src="/media/imagens/user.png"/>
+              {%endif%}
+            </div>
+            <div class="col-md-8">
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td>权限:</td>
+                    <td>{% if request.user.is_superuser %}Administrador{%else%}使用权{%endif%}</td>
+                  </tr>
+                  <tr>
+                    <td>名:</td>
+                    <td>{{request.user.first_name}}</td>
+                  </tr>
+                  <tr>
+                    <td>姓:</td>
+                    <td>{{request.user.last_name}}</td>
+                  </tr>
+                  <tr>
+                    <td>账号:</td>
+                    <td>{{request.user.username}}</td>
+                  </tr>
+                  <tr>
+                    <td>邮箱:</td>
+                    <td>{{request.user.email}}</td>
+                  </tr>
+                  <tr>
+                    <td>我的公司:</td>
+                    <td>{{user_empresa}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+
+          </div>              
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+{%endblock%}
