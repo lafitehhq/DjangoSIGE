@@ -24,7 +24,7 @@ hyperlink==18.0.0
 idna==2.7
 incremental==17.5.0
 javascripthon==0.10
-Jinja2==2.10
+Jinja2==2.11.3
 jupyter-echarts-pypkg==0.1.1
 kiwisolver==1.0.1
 lml==0.0.3
