@@ -58,7 +58,7 @@ service-identity==17.0.0
 signxml==2.5.2
 six==1.11.0
 Twisted==18.4.0
-urllib3==1.23
+urllib3==1.26.5
 virtualenv==16.0.0
 w3lib==1.19.0
 zope.interface==4.5.0
