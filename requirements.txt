@@ -28,7 +28,7 @@ Jinja2==2.10
 jupyter-echarts-pypkg==0.1.1
 kiwisolver==1.0.1
 lml==0.0.3
-lxml==4.2.3
+lxml==4.6.5
 macropy3==1.1.0b2
 MarkupSafe==1.0
 matplotlib==2.2.2
