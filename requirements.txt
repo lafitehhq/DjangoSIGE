@@ -57,7 +57,7 @@ selenium==3.13.0
 service-identity==17.0.0
 signxml==2.5.2
 six==1.11.0
-Twisted==18.4.0
+Twisted==22.10.0
 urllib3==1.23
 virtualenv==16.0.0
 w3lib==1.19.0
