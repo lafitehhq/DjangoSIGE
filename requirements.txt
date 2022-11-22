@@ -35,7 +35,7 @@ matplotlib==2.2.2
 numpy==1.14.5
 olefile==0.44
 parsel==1.5.0
-Pillow==5.2.0
+Pillow==9.3.0
 pyasn1==0.4.3
 pyasn1-modules==0.2.2
 pycparser==2.18
